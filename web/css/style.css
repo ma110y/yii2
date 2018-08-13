@@ -1,0 +1,76 @@
+body{
+background-image: url(img/body_top.png), url(img/body_foot.png)  ;
+background-position: top, bottom;
+background-repeat: no-repeat, repeat-y;
+background-size: 100% 60%, 100% 40%;
+background-attachment:fixed;
+}
+
+
+.top_menu{
+	text-align:right;
+	margin:auto;
+	width:70%;
+	margin-top:1%;
+	margin-bottom:1%;
+}
+
+.top_menu_tel{
+	background:#FFF;
+	padding:5px 10px 5px 10px;
+	border-radius: 15px;
+}
+
+.output_txt{
+	margin:auto;
+	width: 80%;
+	color:#fff;
+	text-shadow: 
+		-0   -1px 0   #000000,
+		 0   -1px 0   #000000,
+		-0    1px 0   #000000,
+		 0    1px 0   #000000,
+		-1px -0   0   #000000,
+		 1px -0   0   #000000,
+		-1px  0   0   #000000,
+		 1px  0   0   #000000,
+		-1px -1px 0   #000000,
+		 1px -1px 0   #000000,
+		-1px  1px 0   #000000,
+		 1px  1px 0   #000000,
+		-1px -1px 0   #000000,
+		 1px -1px 0   #000000,
+		-1px  1px 0   #000000,
+		 1px  1px 0   #000000;
+}
+
+.tltle_output_text{
+	text-align:center;
+	font-weight:bold;
+	font-size:18px;
+	border:solid 3px #f9bc73;
+	padding:3px 5px 3px 5px;
+	margin:auto;
+	width:60%;
+	color:#FFF;
+	border-radius: 20px;
+	margin-bottom:2%;
+	margin-top:2%;
+	text-shadow: 
+		-0   -1px 0   #000000,
+		 0   -1px 0   #000000,
+		-0    1px 0   #000000,
+		 0    1px 0   #000000,
+		-1px -0   0   #000000,
+		 1px -0   0   #000000,
+		-1px  0   0   #000000,
+		 1px  0   0   #000000,
+		-1px -1px 0   #000000,
+		 1px -1px 0   #000000,
+		-1px  1px 0   #000000,
+		 1px  1px 0   #000000,
+		-1px -1px 0   #000000,
+		 1px -1px 0   #000000,
+		-1px  1px 0   #000000,
+		 1px  1px 0   #000000;
+}
