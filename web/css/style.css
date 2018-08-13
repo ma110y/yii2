@@ -15,10 +15,16 @@ background-attachment:fixed;
 	margin-bottom:1%;
 }
 
+.top_menu a{
+	color: #333333;
+	padding-left: 9px;
+}
+
 .top_menu_tel{
 	background:#FFF;
-	padding:5px 10px 5px 10px;
+	padding:5px 10px 5px 2px;
 	border-radius: 15px;
+
 }
 
 .output_txt{

@@ -21,13 +21,14 @@ class TxtForm extends ActiveRecord {
         return [
             'title' => 'Заголовок',
             'text' => 'Текст',
+            'time' => 'Дата',
         ];
     }
 
     public function rules() // правила валидации
     {
         return [
-            [['title',text], required],
+            [['title','text','time'], required],
         ];
     }
 

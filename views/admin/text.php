@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use mihaildev\ckeditor\CKEditor;
+use dosamigos\datepicker\DatePicker;
+
 
 $this -> title = 'Работа с текстом';
 
@@ -16,6 +18,8 @@ $this -> title = 'Работа с текстом';
 
 <?=$form -> field($post, 'title');  //форма ввода заголовка ?>
 
+
+
 <?= $form -> field($post, 'text') ->widget(CKEditor::className(),[
     'editorOptions' => [
         'preset' => 'full', //разработанны стандартные настройки basic, standard, full данную возможность не обязательно использовать
@@ -23,6 +27,11 @@ $this -> title = 'Работа с текстом';
     ],
 ]); ?>
 
+
+<?=$form -> field($post, 'time')->widget(\yii\jui\DatePicker::class, [
+    //'language' => 'ru',
+    'dateFormat' => 'dd/MM/yyyy',
+]) ?>
 
 <?=Html::submitButton('Сохранить', ['class' => 'btn btn-success'])?>
 
@@ -35,6 +44,7 @@ $this -> title = 'Работа с текстом';
 <? foreach ($txt as $return){ ?>
     <h4 align="center"><?=$return->title?></h4>
     <?=$return->text?><br>
+    Добавлено: <?=date("m.d.y", $return->time);?><br>
     <a href="<?=Url::to(['/admin/txtupdate','id' => $return -> id]) ?>"><button class="btn bg-info">Изменить</button></a>
 <? } ?>
 

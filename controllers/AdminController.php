@@ -56,7 +56,15 @@ class AdminController extends Controller {
 
             $post = new TxtForm();
 
+
+
             if($post -> load(Yii::$app -> request -> post()) && $post -> validate()){ // проверка загрузки и валидация
+
+                $timestamp = strtotime(''.$post->time.'');
+
+                $post-> time = $timestamp;
+
+//                echo var_dump($post); die;
 
                 TxtForm::deleteAll(); // Удаляем ранее добавленный текст
 

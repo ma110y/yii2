@@ -16,6 +16,12 @@ use mihaildev\ckeditor\CKEditor;
     ],
 ]); ?>
 
+<?=$model -> field($txt, 'time')->widget(\yii\jui\DatePicker::class, [
+    //'language' => 'ru',
+    'dateFormat' => 'dd/MM/yyyy',
+]) ?>
+
+
 <button class="btn btn-success" type="submit">Изменить</button>
 
 <? $model = ActiveForm::end(); ?>
