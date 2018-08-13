@@ -3,6 +3,8 @@ use yii\bootstrap\Carousel;
 use yii\helpers\Html;
 ?>
 
+<!-- eeeeeeeeeeeeeeeee -->
+
 <div align="center">
 
 <?
