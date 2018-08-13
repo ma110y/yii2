@@ -17,6 +17,12 @@ use yii\widgets\LinkPager;
 
 <?= $form -> field($post, 'img') -> fileInput();?> <!-- поле загрузки файла -->
 
+<?=$form -> field($post, 'time')->widget(\yii\jui\DatePicker::class, [
+    //'language' => 'ru',
+    'dateFormat' => 'dd/MM/yyyy',
+]) ?>
+
+
 <?= Html::submitButton('Добавить', ['class' => 'btn btn-success']); ?> <!-- Кнопка -->
 
 

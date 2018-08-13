@@ -92,6 +92,9 @@ class AdminController extends Controller {
 
         if ($post->load(Yii::$app->request->post()) && $post->validate() ) { // проверяем на загрузку из пост и на валидацию
 
+            $timestamp = strtotime(''.$post->time.'');
+
+            $post-> time = $timestamp;
 
 
             $post->img = UploadedFile::getInstance($post, 'img'); // загружаем картинку на сервер
@@ -141,6 +144,10 @@ class AdminController extends Controller {
 
 
             if ($slider -> load(Yii::$app -> request -> post()) && $slider -> validate()) {
+
+                $timestamp = strtotime(''.$slider->time.'');
+
+                $slider-> time = $timestamp;
 
                 $slider->img = UploadedFile::getInstance($slider, 'img'); // загружаем картинку на сервер
                 $slider->img->saveAs('slider/'.$slider->img->baseName.'.'.$slider->img->extension.'');

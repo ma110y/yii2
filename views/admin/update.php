@@ -18,7 +18,16 @@ use yii\helpers\Url;
 
 <?= $form -> field($slider, 'img') -> fileInput();?> <!-- поле загрузки файла -->
 
+<?=$form -> field($slider, 'time')->widget(\yii\jui\DatePicker::class, [
+    //'language' => 'ru',
+    'dateFormat' => 'dd/MM/yyyy',
+]) ?>
+
+
 <?= Html::submitButton('Обновить', ['class' => 'btn btn-success']); ?> <!-- Кнопка -->
 
 
 <? $form - ActiveForm::end(); ?> <!-- Конец формы -->
+
+<br>
+<a href="<?=Url::to(['admin/slider'])?>"><button class="btn-block">Назад</button></a>

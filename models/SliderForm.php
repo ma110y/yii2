@@ -22,13 +22,14 @@ class SliderForm extends ActiveRecord {
         return [
             'img' => 'Картинка',
             'description' => 'Описание:',
+            'time' => 'Время добавления',
         ];
     }
 
 
     public function rules(){ // правила валидации
         return [
-            ['description', 'required'],
+            [['description', 'time'], 'required'],
             [['img'], 'file'],
         ];
     }
