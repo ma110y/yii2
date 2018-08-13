@@ -37,3 +37,9 @@ $this -> title = 'Работа с текстом';
     <?=$return->text?><br>
     <a href="<?=Url::to(['/admin/txtupdate','id' => $return -> id]) ?>"><button class="btn bg-info">Изменить</button></a>
 <? } ?>
+
+
+<br>
+<br>
+<a href="<?=Url::to(['admin/index'])?>"><button class="btn-block">В админ панель</button></a>
+
