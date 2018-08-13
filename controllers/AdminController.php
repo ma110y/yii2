@@ -31,28 +31,7 @@ class AdminController extends Controller {
         $slider = Slider::find() -> all(); // берем все данные из таблицы со слайдером
 
 
-        $post = new SliderForm(); // новый объект
 
-
-
-        if ($post->load(Yii::$app->request->post()) && $post->validate() ) { // проверяем на загрузку из пост и на валидацию
-
-
-
-            $post->img = UploadedFile::getInstance($post, 'img'); // загружаем картинку на сервер
-            $post->img->saveAs('slider/'.$post->img->baseName.'.'.$post->img->extension.'');
-
-            Image::thumbnail('@webroot/slider/'.$post->img->baseName.'.'.$post->img->extension.'', 650, 350)
-                ->save(Yii::getAlias('@webroot/slider/'.$post->img->baseName.'.'.$post->img->extension.''), ['quality' => 80]);
-            // изменяем размеры картинки ^^
-
-            $post->save(); // сохраняем в БД
-
-            Yii::$app -> session -> setFlash('success', 'Данные сохранены'); // запись в сессию что данные сохранены
-
-            return $this -> refresh(); //перезагружаем страницу что бы не остались введенные данные и при обновлении страницы не спрашивало поаторить запрос
-
-        }
 
 
         $query = Slider::find();
@@ -60,7 +39,7 @@ class AdminController extends Controller {
         $countQuery = clone $query;
 
 
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 3]);
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
 
         $pages->pageSizeParam = false;
         $slider = $query->offset($pages->offset)
@@ -92,6 +71,42 @@ class AdminController extends Controller {
 
         return $this -> render('text', compact('post', 'txt'));
     }
+
+
+
+
+
+    public function actionAdd_img(){
+
+        $post = new SliderForm(); // новый объект
+
+
+
+        if ($post->load(Yii::$app->request->post()) && $post->validate() ) { // проверяем на загрузку из пост и на валидацию
+
+
+
+            $post->img = UploadedFile::getInstance($post, 'img'); // загружаем картинку на сервер
+            $post->img->saveAs('slider/'.$post->img->baseName.'.'.$post->img->extension.'');
+
+            Image::thumbnail('@webroot/slider/'.$post->img->baseName.'.'.$post->img->extension.'', 650, 350)
+                ->save(Yii::getAlias('@webroot/slider/'.$post->img->baseName.'.'.$post->img->extension.''), ['quality' => 80]);
+            // изменяем размеры картинки ^^
+
+            $post->save(); // сохраняем в БД
+
+            Yii::$app -> session -> setFlash('success', 'Данные сохранены'); // запись в сессию что данные сохранены
+
+            return $this -> refresh(); //перезагружаем страницу что бы не остались введенные данные и при обновлении страницы не спрашивало поаторить запрос
+
+        }
+
+        return $this -> render('add_img', compact('post')); // рендерим вьюшку
+
+
+    }
+
+
 
 
     public function actionDel(){ // удаление
