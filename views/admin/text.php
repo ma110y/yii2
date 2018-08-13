@@ -4,6 +4,7 @@ use app\models\TxtForm;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use mihaildev\ckeditor\CKEditor;
 
 $this -> title = 'Работа с текстом';
 
@@ -15,7 +16,12 @@ $this -> title = 'Работа с текстом';
 
 <?=$form -> field($post, 'title');  //форма ввода заголовка ?>
 
-<?= $form -> field($post, 'text') -> textarea(['rows' => '5']); //форма ввода текста  ?>
+<?= $form -> field($post, 'text') ->widget(CKEditor::className(),[
+    'editorOptions' => [
+        'preset' => 'full', //разработанны стандартные настройки basic, standard, full данную возможность не обязательно использовать
+        'inline' => false, //по умолчанию false
+    ],
+]); ?>
 
 
 <?=Html::submitButton('Сохранить', ['class' => 'btn btn-success'])?>

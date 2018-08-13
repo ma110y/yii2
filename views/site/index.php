@@ -34,7 +34,7 @@ use yii\helpers\Html;
     </div>
 
     <div class="output_txt">
-        <?= Html::encode($txt -> text) ?>
+        <?= $txt -> text ?>
     </div>
 
 
