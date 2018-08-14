@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use kartik\datetime\DateTimePicker;
 ?>
 
 <? $this -> title = 'Добавление новой картинки'; ?>
@@ -17,10 +18,7 @@ use yii\widgets\LinkPager;
 
 <?= $form -> field($post, 'img') -> fileInput();?> <!-- поле загрузки файла -->
 
-<?=$form -> field($post, 'time')->widget(\yii\jui\DatePicker::class, [
-    //'language' => 'ru',
-    'dateFormat' => 'dd/MM/yyyy',
-]) ?>
+<?=$form -> field($post, 'time')->widget(DateTimePicker::className(),[]); ?>
 
 
 <?= Html::submitButton('Добавить', ['class' => 'btn btn-success']); ?> <!-- Кнопка -->

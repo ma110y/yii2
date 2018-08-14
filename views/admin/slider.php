@@ -34,7 +34,7 @@ foreach ($slider as $return){ ?> <!-- Вывод картинки/описани
         </td>
 
         <td>
-            <?=date("m.d.y", $return->time)?>
+            <?=date("m.d.y G:i", $return->time);?>
         </td>
 
         <td>

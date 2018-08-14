@@ -2,6 +2,7 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use mihaildev\ckeditor\CKEditor;
+use kartik\datetime\DateTimePicker;
 ?>
 
 
@@ -16,10 +17,8 @@ use mihaildev\ckeditor\CKEditor;
     ],
 ]); ?>
 
-<?=$model -> field($txt, 'time')->widget(\yii\jui\DatePicker::class, [
-    //'language' => 'ru',
-    'dateFormat' => 'dd/MM/yyyy',
-]) ?>
+<? $txt->time = date("Y-m-d G:i", $txt->time);; ?>
+<?=$model -> field($txt, 'time')->widget(DateTimePicker::className(),[]) ; ?>
 
 
 <button class="btn btn-success" type="submit">Изменить</button>

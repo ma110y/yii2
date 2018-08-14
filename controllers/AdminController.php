@@ -174,6 +174,10 @@ class AdminController extends Controller {
 
         if($txt -> load(Yii::$app -> request -> post()) && $txt -> validate()){
 
+            $timestamp = strtotime(''.$txt->time.'');
+
+            $txt-> time = $timestamp;
+
             $txt -> save();
 
             Yii::$app -> session -> setFlash('success', 'Текст успешно изменен');

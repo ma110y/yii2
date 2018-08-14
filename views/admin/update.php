@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap;
 use app\models\Slider;
 use yii\helpers\Url;
-
+use kartik\datetime\DateTimePicker;
 ?>
 
 <? $this -> title = 'Работа со слайдером'; ?>
@@ -18,10 +18,8 @@ use yii\helpers\Url;
 
 <?= $form -> field($slider, 'img') -> fileInput();?> <!-- поле загрузки файла -->
 
-<?=$form -> field($slider, 'time')->widget(\yii\jui\DatePicker::class, [
-    //'language' => 'ru',
-    'dateFormat' => 'dd/MM/yyyy',
-]) ?>
+<? $slider->time = date("Y-m-d G:i", $slider->time);; ?>
+<?=$form -> field($slider, 'time')->widget(DateTimePicker::className(),[]) ; ?>
 
 
 <?= Html::submitButton('Обновить', ['class' => 'btn btn-success']); ?> <!-- Кнопка -->
