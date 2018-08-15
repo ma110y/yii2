@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use mihaildev\ckeditor\CKEditor;
 use dosamigos\datepicker\DatePicker;
 use kartik\datetime\DateTimePicker;
+use yii\captcha\Captcha;
 
 $this -> title = 'Работа с текстом';
 
@@ -29,6 +30,8 @@ $this -> title = 'Работа с текстом';
 
 
 <?=$form -> field($post, 'time')->widget(DateTimePicker::className(),[]); ?>
+
+<?= $form->field($post, 'verifyCode')->widget(Captcha::className()) ?>
 
 <?=Html::submitButton('Сохранить', ['class' => 'btn btn-success'])?>
 

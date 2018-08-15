@@ -142,6 +142,7 @@ class AdminController extends Controller {
 
         $slider = SliderForm::getOne($id);
 
+        $img_name = $slider->img;
 
             if ($slider -> load(Yii::$app -> request -> post()) && $slider -> validate()) {
 
@@ -149,14 +150,23 @@ class AdminController extends Controller {
 
                 $slider-> time = $timestamp;
 
+
                 $slider->img = UploadedFile::getInstance($slider, 'img'); // загружаем картинку на сервер
-                $slider->img->saveAs('slider/'.$slider->img->baseName.'.'.$slider->img->extension.'');
 
-                Image::thumbnail('@webroot/slider/'.$slider->img->baseName.'.'.$slider->img->extension.'', 650, 350)
-                    ->save(Yii::getAlias('@webroot/slider/'.$slider->img->baseName.'.'.$slider->img->extension.''), ['quality' => 80]);
 
+                if($slider->img) {
+
+                    $slider->img->saveAs('slider/' . $slider->img->baseName . '.' . $slider->img->extension . '');
+
+                    Image::thumbnail('@webroot/slider/' . $slider->img->baseName . '.' . $slider->img->extension . '', 650, 350)
+                        ->save(Yii::getAlias('@webroot/slider/' . $slider->img->baseName . '.' . $slider->img->extension . ''), ['quality' => 80]);
+
+                } else {
+                    $slider->img = $img_name;
+                }
 
                 $slider -> save();
+
                 Yii::$app->session->setFlash('success', 'Обновлено');
                 return Yii::$app->response->redirect(['admin/slider']);
             }

@@ -13,6 +13,8 @@ use yii\db\ActiveRecord;
 
 class TxtForm extends ActiveRecord {
 
+    public $verifyCode;
+
     public static function tableName() { // имя таблицы
         return 'text';
     }
@@ -22,6 +24,7 @@ class TxtForm extends ActiveRecord {
             'title' => 'Заголовок',
             'text' => 'Текст',
             'time' => 'Дата',
+            'verifyCode' => 'Введите код с картинки',
         ];
     }
 
@@ -29,6 +32,7 @@ class TxtForm extends ActiveRecord {
     {
         return [
             [['title','text','time'], required],
+            ['verifyCode', 'captcha'],
         ];
     }
 
