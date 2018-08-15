@@ -38,8 +38,12 @@ foreach ($slider as $return){ ?> <!-- Вывод картинки/описани
         </td>
 
         <td>
-        <a href="<?=Url::to(['admin/update', 'id' => $return -> id])?>"> <img src="/web/css/icons/edit.png" alt="Редактировать"> </a>
-        <a href="<?=Url::to(['admin/del', 'id' => $return -> id]);?>"> <img src="/web/css/icons/del.png" alt="Удалить"> </a>
+            <a href="<?=Url::to(['admin/update', 'id' => $return -> id])?>">
+                <i class="glyphicon glyphicon-pencil" style="font-size: 150%"></i>
+            </a>
+        <a href="<?=Url::to(['admin/del', 'id' => $return -> id]);?>">
+            <i class="glyphicon glyphicon-remove" style="font-size: 150%"></i>
+        </a>
         </td>
     </tr>
 <? } ?>
