@@ -17,7 +17,7 @@ use yii\web\UploadedFile;
 use yii\imagine\Image;
 use app\models\SliderForm;
 use app\models\Slider;
-
+use app\models\ArticleForm;
 
 
 class AdminController extends Controller {
@@ -199,6 +199,29 @@ class AdminController extends Controller {
 
     }
 
+
+    public function actionArticle(){
+
+        $post = new ArticleForm();
+
+        if($post -> load(Yii::$app -> request -> post()) && $post -> validate()){
+
+            $time = strtotime($post->time);
+            $post -> time = $time;
+
+
+            $post -> img = UploadedFile::getInstance($post, 'img');
+            $post -> img -> saveAs('article/'.$post->img->baseName.'.'.$post->img->extension.'');
+
+            Image::thumbnail('@webroot/article/' . $post->img->baseName . '.' . $post->img->extension . '', 300, 90)
+            ->save(Yii::getAlias('@webroot/article/' . $post->img->baseName . '.' . $post->img->extension . ''), ['quality' => 80]);
+
+
+            $post -> save();
+        }
+
+        return $this -> render('article', compact('post'));
+    }
 
 
 }

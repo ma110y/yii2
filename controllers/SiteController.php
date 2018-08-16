@@ -163,4 +163,8 @@ class SiteController extends Controller
         return $this->render('signup', compact('model')); // рендерим вьюшку
     }
 
+    public function actionArticle(){
+        return $this -> render('article');
+    }
+
 }

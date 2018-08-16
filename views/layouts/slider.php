@@ -79,6 +79,7 @@ AppAsset::register($this);
 <div class="top_menu">
 
     <a href="<?=Url::to(['/site/index'])?>"> Home </a>
+    <a href="<?=Url::to(['/site/article'])?>"> Articles </a>
 <!--    <a href="--><?//=Url::to(['/site/about'])?><!--">About</a>-->
 <!--    <a href="--><?//=Url::to(['/site/contact'])?><!--">Contact</a>-->
 
