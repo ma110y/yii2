@@ -4,10 +4,14 @@ use mihaildev\ckeditor\CKEditor;
 use kartik\datetime\DateTimePicker;
 ?>
 
+<? $this -> title = 'Статьи'; ?>
 
 <? $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);?>
 
 <?=$form -> field($post, 'title')?>
+
+<?=$form -> field($post, 'discription')?>
+
 
 <?=$form -> field($post, 'text')->widget(CKEditor::className(),[
     'editorOptions' => [

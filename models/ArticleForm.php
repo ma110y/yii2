@@ -20,7 +20,7 @@ class ArticleForm extends ActiveRecord {
 
     public function rules(){
         return [
-            [['title', 'text', 'author', 'time'], required],
+            [['title', 'text', 'author', 'time', 'discription'], required],
             [['img'], 'file']
         ];
     }
@@ -32,8 +32,14 @@ class ArticleForm extends ActiveRecord {
             'text' => 'Текст статьи',
             'img' => 'Превью',
             'time' => 'Время добавления',
-            'author' => 'Автор'
+            'author' => 'Автор',
+            'discription' => 'Краткое описание'
         ];
+    }
+
+    public static function getOne($id){
+        $article = self::find() -> where(['id' => $id]) -> one();
+        return $article;
     }
 
 }

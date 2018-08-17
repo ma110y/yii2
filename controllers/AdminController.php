@@ -218,6 +218,10 @@ class AdminController extends Controller {
 
 
             $post -> save();
+
+            Yii::$app -> session -> setFlash('success', 'Текст успешно добавлен');
+
+            return Yii::$app -> response ->redirect(['admin/article']);
         }
 
         return $this -> render('article', compact('post'));

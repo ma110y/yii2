@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\ArticleForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -164,7 +165,16 @@ class SiteController extends Controller
     }
 
     public function actionArticle(){
-        return $this -> render('article');
+        $article = ArticleForm::find() -> all();
+
+        return $this -> render('article', compact('article'));
+    }
+
+
+    public function actionArticle_view($id){
+        $article = ArticleForm::getOne($id);
+
+        return $this -> render('article_view', compact('article'));
     }
 
 }
