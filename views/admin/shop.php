@@ -1,3 +1,64 @@
+<?
+$file = $_SERVER['DOCUMENT_ROOT'].'/web/xml/import.xml';
+$xml = simplexml_load_file($file);
+$json = json_encode($xml);
+$data = json_decode($json,TRUE);
+
+
+?><h1>Группы</h1><?
+
+
+foreach($data as $item) {
+$count_for = count($item['Группы']['Группа']);
+$count_for2 = count($item['Группы']['Группа'][--$count_for]['Группы']['Группа']);
+    for($i=0; $i<$count_for; $i++){
+        echo $item['Группы']['Группа'][$i]['Ид']." - ";
+        echo $item['Группы']['Группа'][$i]['Наименование']." <br>";
+    }
+
+    for($i=0; $i<$count_for2; $i++){
+        echo $item['Группы']['Группа'][$count_for]['Группы']['Группа'][$i]['Ид']." - ";
+        echo $item['Группы']['Группа'][$count_for]['Группы']['Группа'][$i]['Наименование']."<br>";
+    }
+}
+
+
+?><h1>Спарвочник</h1><?
+
+
+foreach($data as $item) {
+    $count_for = count($item['Свойства']['Свойство']);
+    for($j = 0; $j<$count_for;$j++){
+        $count_for2 = count($item['Свойства']['Свойство'][$j]);
+    for($i=0; $i<$count_for2; $i++){
+        echo $item['Свойства']['Свойство'][$j]["ВариантыЗначений"]['Справочник'][$i]['ИдЗначения']." - ";
+        echo $item['Свойства']['Свойство'][$j]["ВариантыЗначений"]['Справочник'][$i]['Значение']." <br>";
+    }
+}}
+
+
+?><h1>Категории</h1><?
+
+
+foreach($data as $item) {
+    $count_for = count($item['Категории']['Категория']);
+    for($i=0; $i<$count_for; $i++){
+        echo $item['Категории']['Категория'][$i]['Ид']." - ";
+        echo $item['Категории']['Категория'][$i]['Наименование']." <br>";
+    }
+
+}
+
+
+
+
+echo "<pre>";
+echo var_dump($data);
+echo "</pre>";
+?>
+
+<?// Дальше мои попытки разобраться. Оставил на всякий случай. Код только то что сверху?>
+
 <?//
 //$file = $_SERVER['DOCUMENT_ROOT'].'/web/xml/import.xml';
 //
@@ -87,9 +148,7 @@
 //
 //
 //?>
-<?
-$file = $_SERVER['DOCUMENT_ROOT'].'/web/xml/import.xml';
-$xml = simplexml_load_file($file);
+
 
 //
 //$num = count ($xml->Группы->Группа);
@@ -119,62 +178,7 @@ $xml = simplexml_load_file($file);
 //    echo $se.' - '.$i.'<br>';
 //}
 
-?><hr><?
 
-$json = json_encode($xml);
-$data = json_decode($json,TRUE);
-
-
-?><h1>Группы</h1><?
-
-
-foreach($data as $item) {
-$count_for = count($item['Группы']['Группа']);
-$count_for2 = count($item['Группы']['Группа'][--$count_for]['Группы']['Группа']);
-    for($i=0; $i<$count_for; $i++){
-        echo $item['Группы']['Группа'][$i]['Ид']." - ";
-        echo $item['Группы']['Группа'][$i]['Наименование']." <br>";
-    }
-
-    for($i=0; $i<$count_for2; $i++){
-        echo $item['Группы']['Группа'][$count_for]['Группы']['Группа'][$i]['Ид']." - ";
-        echo $item['Группы']['Группа'][$count_for]['Группы']['Группа'][$i]['Наименование']."<br>";
-    }
-}
-
-
-?><h1>Спарвочник</h1><?
-
-
-foreach($data as $item) {
-    $count_for = count($item['Свойства']['Свойство']);
-    for($j = 0; $j<$count_for;$j++){
-        $count_for2 = count($item['Свойства']['Свойство'][$j]);
-    for($i=0; $i<$count_for2; $i++){
-        echo $item['Свойства']['Свойство'][$j]["ВариантыЗначений"]['Справочник'][$i]['ИдЗначения']." - ";
-        echo $item['Свойства']['Свойство'][$j]["ВариантыЗначений"]['Справочник'][$i]['Значение']." <br>";
-    }
-}}
-
-
-?><h1>Категории</h1><?
-
-
-foreach($data as $item) {
-    $count_for = count($item['Категории']['Категория']);
-    for($i=0; $i<$count_for; $i++){
-        echo $item['Категории']['Категория'][$i]['Ид']." - ";
-        echo $item['Категории']['Категория'][$i]['Наименование']." <br>";
-    }
-
-}
-
-
-
-
-echo "<pre>";
-echo var_dump($data);
-echo "</pre>";
 
 
 
@@ -197,4 +201,4 @@ echo "</pre>";
 //
 
 
-?>
+//?>
