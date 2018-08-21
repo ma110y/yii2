@@ -228,4 +228,8 @@ class AdminController extends Controller {
     }
 
 
+    public function actionShop(){
+        return $this -> render('shop');
+    }
+
 }
