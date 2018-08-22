@@ -33,7 +33,6 @@ class AdminController extends Controller {
 
 
 
-
         $query = Slider::find();
 
         $countQuery = clone $query;
