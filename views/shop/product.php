@@ -1,6 +1,10 @@
 <?
 use yii\helpers\Url;
+use yii\widgets\LinkPager;
 ?>
+
+<? $this -> title = 'Товары'; ?>
+
 
 <? $id = Yii::$app->request->get('id'); ?>
 
@@ -29,5 +33,16 @@ use yii\helpers\Url;
     </div>
         <? } ?>
 
+    <?php
+    echo LinkPager::widget([
+        'pagination' => $pages,
+    ]);
+    ?>
 
 </div>
+
+<br>
+
+<a href="<?=Url::to(['shop/index'])?>" class="btn btn-danger btn-block">
+    К списку каталогов
+</a>

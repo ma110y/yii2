@@ -34,6 +34,7 @@ class ProductForm extends ActiveRecord {
             'img' => 'Картинка',
             'vendor_code' => 'Артикул',
             'price' => 'Цена',
+            'id_catalog' => 'Каталог',
         ];
     }
 

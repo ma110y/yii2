@@ -1,7 +1,11 @@
 <?
 use yii\widgets\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 ?>
+
+<? $this -> title = 'Изменение товара'; ?>
 
 
 
@@ -61,6 +65,19 @@ echo newerton\fancybox\FancyBox::widget([
 
 <?= $form->field($product, 'price') ?>
 
-    <button type="submit" class="btn btn-success">Добавить товар</button>
+<?
+
+    // формируем массив, с ключем равным полю 'id' и значением равным полю 'name'
+    $items = ArrayHelper::map($change_catalog,'id','name');
+    $params = [
+    'prompt' => 'Укажите автора записи'
+    ];
+    ?>
+<?= $form->field($product, 'id_catalog')->dropDownList($items,$params); ?>
+
+
+    <button type="submit" class="btn btn-success">Изменить товар</button>
 
 <? $form = ActiveForm::end(); ?>
+<br>
+<a href="<?=Url::to(['shop/product', 'id' => $product->id_catalog])?>" class="btn btn-danger btn-block">Назад</a>

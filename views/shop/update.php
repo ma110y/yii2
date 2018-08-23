@@ -2,6 +2,9 @@
 use yii\widgets\ActiveForm;
 ?>
 
+<? $this -> title = 'Изменить каталог'; ?>
+
+
 <? $form = ActiveForm::begin(); ?>
 
 <?= $form->field($catalog, 'name')?>

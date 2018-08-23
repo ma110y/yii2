@@ -4,6 +4,8 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 ?>
 
+<? $this -> title = 'Список каталогов'; ?>
+
 <table class="table">
 <?
 foreach ($catalog AS $cat){ ?>

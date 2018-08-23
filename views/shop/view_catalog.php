@@ -4,6 +4,9 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 ?>
 
+<? $this -> title = 'Просмотр каталога'; ?>
+
+
 <?
 if(count($catalog) == 0) { ?><div class="alert alert-danger">Нет подкаталогов</div><? }
 ?>

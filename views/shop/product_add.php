@@ -3,6 +3,9 @@ use yii\widgets\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
 ?>
 
+<? $this -> title = 'Добавление товара'; ?>
+
+
 <? $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
 <?= $form->field($product, 'name')?>

@@ -1,4 +1,11 @@
+<?
+use yii\helpers\Url;
+?>
+
 <? $prod =  (array) $product; ?>
+
+<? $this -> title = 'Просмотр товара'; ?>
+
 
 <div class="panel panel-default">
     <!-- Default panel contents -->
@@ -56,5 +63,8 @@
 
     </ul>
 
+    <br>
 
-
+<a href="<?=Url::to(['shop/product', 'id' => $prod[0]['id_catalog']])?>" class="btn btn-danger btn-block">
+    Назад
+</a>

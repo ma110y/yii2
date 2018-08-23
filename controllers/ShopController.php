@@ -130,7 +130,19 @@ class ShopController extends Controller {
 
         $product = ProductForm::getAll($id);
 
-        return $this -> render('product', compact('product'));
+        $query = ProductForm::find() -> where(['id_catalog' => $id]) ;
+
+        $countQuery = $query;
+
+
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
+
+        $pages->pageSizeParam = false;
+        $catalog = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this -> render('product', compact('product','pages'));
     }
 
 
@@ -179,6 +191,8 @@ class ShopController extends Controller {
 
         $img_name = $product->img;
 
+        $change_catalog = ShopForm::find() -> all();
+
         if($product -> load(Yii::$app->request->post()) && $product->validate()){
 
             if($product->img) {
@@ -197,7 +211,7 @@ class ShopController extends Controller {
 
         }
 
-        return $this -> render('product_update', compact('product'));
+        return $this -> render('product_update', compact('product', 'change_catalog'));
 
     }
 
