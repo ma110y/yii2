@@ -2,6 +2,13 @@
 use yii\helpers\Url;
 ?>
 
+<?
+if(Yii::$app->user->identity->role != 'admin'){
+    Yii::$app->response->redirect(Url::to('?'));
+} // выкидываем неадминов
+?>
+
+
 <? $prod =  (array) $product; ?>
 
 <? $this -> title = 'Просмотр товара'; ?>

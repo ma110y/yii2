@@ -3,6 +3,14 @@ use yii\widgets\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
 ?>
 
+
+<?
+if(Yii::$app->user->identity->role != 'admin'){
+    Yii::$app->response->redirect(Url::to('?'));
+} // выкидываем неадминов
+?>
+
+
 <? $this -> title = 'Добавление товара'; ?>
 
 
@@ -22,6 +30,10 @@ use mihaildev\ckeditor\CKEditor;
 <?= $form->field($product, 'vendor_code') ?>
 
 <?= $form->field($product, 'price') ?>
+
+
+<?=$form->field($product, 'active')->dropDownList(['1' => 'Активный', '0' => 'Неактивный']); ?>
+
 
 <button type="submit" class="btn btn-success">Добавить товар</button>
 

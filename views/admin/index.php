@@ -17,3 +17,5 @@ if(Yii::$app->user->identity->role != 'admin'){
 <a href="<?=Url::to(['admin/text']);?>">Работа с текстом </a>
 <br>
 <a href="<?=Url::to(['admin/article']);?>">Работа со статьями </a>
+<br>
+<a href="<?=Url::to(['shop/index']);?>">Работа с товарами </a>

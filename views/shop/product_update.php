@@ -5,6 +5,14 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 ?>
 
+<?
+if(Yii::$app->user->identity->role != 'admin'){
+    Yii::$app->response->redirect(Url::to('?'));
+} // выкидываем неадминов
+?>
+
+
+
 <? $this -> title = 'Изменение товара'; ?>
 
 
@@ -69,11 +77,11 @@ echo newerton\fancybox\FancyBox::widget([
 
     // формируем массив, с ключем равным полю 'id' и значением равным полю 'name'
     $items = ArrayHelper::map($change_catalog,'id','name');
-    $params = [
-    'prompt' => 'Укажите автора записи'
-    ];
     ?>
-<?= $form->field($product, 'id_catalog')->dropDownList($items,$params); ?>
+<?= $form->field($product, 'id_catalog')->dropDownList($items); ?>
+
+
+<?=$form->field($product, 'active')->dropDownList(['1' => 'Активный', '0' => 'Неактивный']); ?>
 
 
     <button type="submit" class="btn btn-success">Изменить товар</button>

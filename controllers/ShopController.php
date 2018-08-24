@@ -39,6 +39,7 @@ class ShopController extends Controller {
 
         if($post -> load(Yii::$app -> request -> post()) && $post -> validate()){
 
+
             $post -> save();
 
             Yii::$app -> session -> setFlash('success', 'Каталог добавлен');
@@ -95,7 +96,13 @@ class ShopController extends Controller {
 
         $catalog = ShopForm::getCatalog($id);
 
+        $product = ProductForm::getall($id);
+
+        $catalog_name = ShopForm::getCatalogName($id);
+
         $catalog_add = new ShopForm();
+
+
 
         $query = ShopForm::find() -> where(['id_catalog' => $id]) ;
 
@@ -122,13 +129,17 @@ class ShopController extends Controller {
         }
 
 
-        return $this -> render('view_catalog', compact('catalog', 'pages','catalog_add'));
+        return $this -> render('view_catalog', compact('catalog', 'pages','catalog_add','catalog_name','product'));
     }
 
 
     public function actionProduct($id){
 
         $product = ProductForm::getAll($id);
+
+        $catalog_name = ShopForm::getCatalogName($id);
+
+        $catalog_name_prev = ShopForm::getCatalogName($catalog_name->id_catalog);
 
         $query = ProductForm::find() -> where(['id_catalog' => $id]) ;
 
@@ -142,7 +153,7 @@ class ShopController extends Controller {
             ->limit($pages->limit)
             ->all();
 
-        return $this -> render('product', compact('product','pages'));
+        return $this -> render('product', compact('product','pages','catalog_name','catalog_name_prev'));
     }
 
 

@@ -23,6 +23,7 @@ class ShopForm extends ActiveRecord {
     {
         return [
             'name' => 'Название каталога',
+            'active' => 'Активный',
         ];
     }
 
@@ -30,7 +31,7 @@ class ShopForm extends ActiveRecord {
 
     public function rules(){ // правила валидации
         return [
-            ['name', 'required'],
+            [['name','active'], 'required'],
         ];
     }
 
@@ -51,5 +52,9 @@ class ShopForm extends ActiveRecord {
         return $catalog;
     }
 
+    public function getCatalogName($id){
+        $catalog_name = ShopForm::find() -> where(['id' => $id ])->one();
+        return $catalog_name;
+    }
 
 }

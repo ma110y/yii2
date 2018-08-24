@@ -4,7 +4,15 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 ?>
 
+<?
+if(Yii::$app->user->identity->role != 'admin'){
+Yii::$app->response->redirect(Url::to('?'));
+} // выкидываем неадминов
+?>
+
 <? $this -> title = 'Список каталогов'; ?>
+
+<h1>Список каталогов</h1>
 
 <table class="table">
 <?
@@ -38,6 +46,10 @@ echo LinkPager::widget([
 <? $form = ActiveForm::begin(); ?>
 
 <?= $form->field($post, 'name')?>
+
+<?=$form->field($post, 'active')->dropDownList(['1' => 'Активный', '0' => 'Неактивный']); ?>
+
+
 
 <button type="submit" class="btn btn-success">Добавить</button>
 

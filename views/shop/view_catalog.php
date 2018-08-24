@@ -4,8 +4,33 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 ?>
 
+<?
+if(Yii::$app->user->identity->role != 'admin'){
+    Yii::$app->response->redirect(Url::to('?'));
+} // выкидываем неадминов
+?>
+
+
+<?//
+//echo "<pre>";
+//echo var_dump($catalog);
+//echo "<pre>";
+//die();
+//?>
+
 <? $this -> title = 'Просмотр каталога'; ?>
 
+<h2>Вы находитесь в "<?=$catalog_name->name?>"</h2>
+
+<br>
+
+<? $id = Yii::$app->request->get('id'); ?>
+
+<a href="<?=Url::to(['shop/product_add', 'id_catalog' => $id])?>" class="btn btn-primary">Добавить товар </a>
+
+<br>
+
+<h2>Список подкаталогов:</h2>
 
 <?
 if(count($catalog) == 0) { ?><div class="alert alert-danger">Нет подкаталогов</div><? }
@@ -34,6 +59,8 @@ if(count($catalog) == 0) { ?><div class="alert alert-danger">Нет подкат
     ?>
 </table>
 
+
+
 <?php
 echo LinkPager::widget([
     'pagination' => $pages,
@@ -47,6 +74,9 @@ echo LinkPager::widget([
 <? $form = ActiveForm::begin(); ?>
 
 <?= $form->field($catalog_add, 'name')?>
+
+<?=$form->field($catalog_add, 'active')->dropDownList(['1' => 'Активный', '0' => 'Неактивный']); ?>
+
 
 <button type="submit" class="btn btn-success">Добавить</button>
 

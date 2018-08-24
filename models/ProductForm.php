@@ -21,7 +21,7 @@ class ProductForm extends ActiveRecord {
 
     public function rules(){ // правила валидации
         return [
-            [['name', 'description', 'vendor_code', 'price'], 'required'],
+            [['name', 'description', 'vendor_code', 'price','active'], 'required'],
             [['img'], 'file'],
         ];
     }
@@ -35,6 +35,7 @@ class ProductForm extends ActiveRecord {
             'vendor_code' => 'Артикул',
             'price' => 'Цена',
             'id_catalog' => 'Каталог',
+            'active' => 'Активный',
         ];
     }
 
