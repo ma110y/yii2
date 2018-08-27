@@ -66,7 +66,15 @@ if(Yii::$app->user->identity->role != 'admin'){
         </div>
 
         <li class="list-group-item"><b>Артикул:</b> <?=$prod[0]['vendor_code']?> </li>
+
         <li class="list-group-item"><b>Цена: </b> <?=$prod[0]['price']?> </li>
+
+        <li class="list-group-item"><b>Добавлен: </b> <?=date("m.d.y G:i", $prod[0]['time']);?> </li>
+
+        <? if($prod[0]['active'] == 0){ ?>
+            <li class="list-group-item"><b>Статус: </b> Неактивен </li>
+        <? } ?>
+
 
     </ul>
 

@@ -200,11 +200,16 @@ class ShopController extends Controller {
 
         $product = ProductForm::getOneProduct($id);
 
+        $catalog = ShopForm::find() -> where(['id_catalog' => 0])-> all();
+
         $img_name = $product->img;
 
         $change_catalog = ShopForm::find() -> all();
 
         if($product -> load(Yii::$app->request->post()) && $product->validate()){
+
+            $timestamp = strtotime(''.$product->time.'');
+            $product-> time = $timestamp;
 
             if($product->img) {
             $product -> img = UploadedFile::getInstance($product, 'img');
@@ -222,7 +227,7 @@ class ShopController extends Controller {
 
         }
 
-        return $this -> render('product_update', compact('product', 'change_catalog'));
+        return $this -> render('product_update', compact('product', 'change_catalog','catalog'));
 
     }
 
@@ -244,6 +249,25 @@ class ShopController extends Controller {
         Yii::$app -> session -> setFlash('success', 'Тавар удален');
 
         return Yii::$app->response->redirect(['shop/product', 'id' => $id_catalog]);
+    }
+
+
+    public function actionForma(){
+        $catalog = ShopForm::find() -> where(['id_catalog' => 0])-> all();
+
+        for($i=0; $i<count($catalog); $i++) {
+            echo "<b>".$catalog[$i]['name'] . "</b><br>";
+                $podcatalog = ShopForm::getCatalog($catalog[$i]['id']);
+                    for($j=0; $j<count($podcatalog); $j++){
+                        echo $podcatalog[$j]['name'] . "<br>";
+                    }
+
+        }
+
+        echo "<pre>";
+        echo var_dump($change_catalog);
+        echo"</pre>";
+
     }
 
 

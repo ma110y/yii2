@@ -102,6 +102,7 @@ foreach ($product AS $prod){?>
          <td>
              <a href="<?=Url::to(['shop/product_view', 'id' => ''.$prod->id.'' ])?>">
                 <?=$prod->name?>
+                <? if($prod->active == 0){ echo' (Неактивен)'; } ?>
              </a>
          </td>
 

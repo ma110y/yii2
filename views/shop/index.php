@@ -21,6 +21,7 @@ foreach ($catalog AS $cat){ ?>
         <td>
             <a href="<?=Url::to(['shop/view_catalog', 'id' => ''.$cat -> id.''])?>">
                 <?=$cat->name?>
+                    <? if($cat->active == 0){ echo' (Неактивен)'; } ?>
             </a>
         </td>
 

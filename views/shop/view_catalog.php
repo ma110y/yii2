@@ -43,6 +43,7 @@ if(count($catalog) == 0) { ?><div class="alert alert-danger">Нет подкат
             <td>
                 <a href="<?=Url::to(['shop/product', 'id' => ''.$cat -> id.''])?>">
                     <?=$cat->name?>
+                        <? if($cat->active == 0){ echo' (Неактивен)'; } ?>
                 </a>
             </td>
 

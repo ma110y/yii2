@@ -3,6 +3,8 @@ use yii\widgets\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use kartik\datetime\DateTimePicker;
+use app\models\ShopForm;
 ?>
 
 <?
@@ -15,13 +17,9 @@ if(Yii::$app->user->identity->role != 'admin'){
 
 <? $this -> title = 'Изменение товара'; ?>
 
-
-
 <? $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
 <?= $form->field($product, 'name')?>
-
-
 
 <?php
 echo newerton\fancybox\FancyBox::widget([
@@ -73,17 +71,16 @@ echo newerton\fancybox\FancyBox::widget([
 
 <?= $form->field($product, 'price') ?>
 
-<?
 
-    // формируем массив, с ключем равным полю 'id' и значением равным полю 'name'
-    $items = ArrayHelper::map($change_catalog,'id','name');
-    ?>
-<?= $form->field($product, 'id_catalog')->dropDownList($items); ?>
+<? $product->time = date("Y-m-d G:i", $product->time);; ?>
+<?=$form -> field($product, 'time')->widget(DateTimePicker::className(),[]) ; ?>
 
 
 <?=$form->field($product, 'active')->dropDownList(['1' => 'Активный', '0' => 'Неактивный']); ?>
 
-
+<a href="<?=Url::to(['moveproduct/index','id_product' => $product->id])?>" class="btn btn-danger">Переместить товар</a>
+<br>
+<br>
     <button type="submit" class="btn btn-success">Изменить товар</button>
 
 <? $form = ActiveForm::end(); ?>
