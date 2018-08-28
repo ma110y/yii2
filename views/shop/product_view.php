@@ -13,6 +13,27 @@ if(Yii::$app->user->identity->role != 'admin'){
 
 <? $this -> title = 'Просмотр товара'; ?>
 
+<div class="btn-group">
+    <div class="btn btn-primary">Путь:</div>
+
+
+    <a href="<?=Url::to(['shop/index'])?>" class="btn btn-danger">
+        /
+    </a>
+
+    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])?>" class="btn btn-danger">
+        <?=$catalog_name_prev->name?>
+    </a>
+
+    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger">
+        <?=$catalog_name->name?>
+    </a>
+
+    <a href="<?=Url::to(['shop/product_view', 'id' => $prod[0]['id']])?>" class="btn btn-danger">
+        <?=$prod[0]['name']?>
+    </a>
+</div>
+
 
 <div class="panel panel-default">
     <!-- Default panel contents -->
@@ -79,6 +100,8 @@ if(Yii::$app->user->identity->role != 'admin'){
     </ul>
 
     <br>
+
+
 
 <a href="<?=Url::to(['shop/product', 'id' => $prod[0]['id_catalog']])?>" class="btn btn-danger btn-block">
     Назад

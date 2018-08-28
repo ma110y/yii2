@@ -37,7 +37,7 @@ if(count($catalog) == 0) { ?><div class="alert alert-danger">Нет подкат
     foreach ($catalog AS $cat){ ?>
         <tr>
             <td>
-                <a href="<?=Url::to(['shop/product', 'id' => ''.$cat -> id.''])?>">
+                <a href="<?=Url::to(['moveproduct/catalog_view', 'id_catalog' => ''.$cat -> id.'', 'id_product' =>$id_product])?>">
                     <?=$cat->name?>
                     <? if($cat->active == 0){ echo' (Неактивен)'; } ?>
                 </a>

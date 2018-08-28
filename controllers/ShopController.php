@@ -104,17 +104,32 @@ class ShopController extends Controller {
 
 
 
+
+        //пагинация для каталогов
         $query = ShopForm::find() -> where(['id_catalog' => $id]) ;
-
         $countQuery = $query;
-
-
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
-
-        $pages->pageSizeParam = false;
-        $catalog = $query->offset($pages->offset)
-            ->limit($pages->limit)
+        $pages_catalog = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
+        $pages_catalog->pageSizeParam = false;
+        $pages_catalog -> pageParam = 'page_catalog';
+        $catalog = $query->offset($pages_catalog->offset)
+            ->limit($pages_catalog->limit)
             ->all();
+        /////////////////////////
+
+
+        //пагинация для товаров
+        $query2 = ProductForm::find() -> where(['id_catalog' => $id]) ;
+        $countQuery2 = $query2;
+        $pages_product = new Pagination(['totalCount' => $countQuery2->count(), 'pageSize' => 10]);
+        $pages_product->pageSizeParam = false;
+        $pages_product -> pageParam = 'page_product';
+        $product = $query2->offset($pages_product->offset)
+            ->limit($pages_product->limit)
+            ->all();
+        /////////////////////////
+
+
+
 
         if($catalog_add->load(Yii::$app->request->post()) && $catalog_add->validate()){
 
@@ -129,7 +144,7 @@ class ShopController extends Controller {
         }
 
 
-        return $this -> render('view_catalog', compact('catalog', 'pages','catalog_add','catalog_name','product'));
+        return $this -> render('view_catalog', compact('catalog', 'pages_catalog','pages_product','catalog_add','catalog_name','product'));
     }
 
 
@@ -191,7 +206,11 @@ class ShopController extends Controller {
 
         $product = ProductForm::getOne($id);
 
-        return $this -> render('product_view', compact('product'));
+        $catalog_name = ShopForm::getCatalogName($id);
+
+        $catalog_name_prev = ShopForm::getCatalogName($catalog_name->id_catalog);
+
+        return $this -> render('product_view', compact('product','catalog_name','catalog_name_prev'));
 
     }
 
