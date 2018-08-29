@@ -21,9 +21,12 @@ if(Yii::$app->user->identity->role != 'admin'){
         /
     </a>
 
+
+    <? if(isset($catalog_name_prev)){ ?>
     <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])?>" class="btn btn-danger">
         <?=$catalog_name_prev->name?>
     </a>
+    <? } ?>
 
     <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger">
         <?=$catalog_name->name?>
@@ -102,7 +105,13 @@ if(Yii::$app->user->identity->role != 'admin'){
     <br>
 
 
+    <? if(!isset($catalog_name_prev)){ ?>
+        <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger btn-block">
+            Назад
+        </a>
+    <? } else{ ?>
 
 <a href="<?=Url::to(['shop/product', 'id' => $prod[0]['id_catalog']])?>" class="btn btn-danger btn-block">
     Назад
 </a>
+<? } ?>

@@ -60,21 +60,14 @@ class MoveproductController extends Controller {
 
     public function actionCatalog_view($id_catalog){
 
-        $catalog = ShopForm::getCatalog($id_catalog);
+
+        $id_product = Yii::$app->request->get('id_product');
+        $id_catalog = Yii::$app->request->get('id_catalog');
+
+        $product_name = ProductForm::getOneProduct($id_product);
         $catalog_name = ShopForm::getCatalogName($id_catalog);
 
-        $query = ShopForm::find() -> where(['id_catalog' => $id_catalog]) ;
-
-        $countQuery = $query;
-
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
-
-        $pages->pageSizeParam = false;
-        $catalog = $query->offset($pages->offset)
-            ->limit($pages->limit)
-            ->all();
-
-        return $this -> render('catalog_view', compact('catalog','catalog_name','pages'));
+        return $this -> render('catalog_view', compact('product_name','catalog_name'));
 
     }
 

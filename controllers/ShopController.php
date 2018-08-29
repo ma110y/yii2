@@ -206,9 +206,11 @@ class ShopController extends Controller {
 
         $product = ProductForm::getOne($id);
 
-        $catalog_name = ShopForm::getCatalogName($id);
+        $catalog_name = ShopForm::getCatalogName($product[0]->id_catalog);
 
         $catalog_name_prev = ShopForm::getCatalogName($catalog_name->id_catalog);
+
+
 
         return $this -> render('product_view', compact('product','catalog_name','catalog_name_prev'));
 
@@ -219,7 +221,11 @@ class ShopController extends Controller {
 
         $product = ProductForm::getOneProduct($id);
 
-        $catalog = ShopForm::find() -> where(['id_catalog' => 0])-> all();
+
+
+        $catalog_name = ShopForm::getCatalogName($product->id_catalog);
+
+        $catalog_name_prev = ShopForm::getCatalogName($catalog_name->id_catalog);
 
         $img_name = $product->img;
 
@@ -246,7 +252,7 @@ class ShopController extends Controller {
 
         }
 
-        return $this -> render('product_update', compact('product', 'change_catalog','catalog'));
+        return $this -> render('product_update', compact('product', 'change_catalog','catalog_name','catalog_name_prev'));
 
     }
 
@@ -271,23 +277,63 @@ class ShopController extends Controller {
     }
 
 
-    public function actionForma(){
-        $catalog = ShopForm::find() -> where(['id_catalog' => 0])-> all();
+    public function actionLoadxml()
+    {
+        $file = $_SERVER['DOCUMENT_ROOT'].'/web/xml/import.xml';
+        $xml = simplexml_load_file($file);
+        $json = json_encode($xml);
+        $data = json_decode($json,TRUE);
 
-        for($i=0; $i<count($catalog); $i++) {
-            echo "<b>".$catalog[$i]['name'] . "</b><br>";
-                $podcatalog = ShopForm::getCatalog($catalog[$i]['id']);
-                    for($j=0; $j<count($podcatalog); $j++){
-                        echo $podcatalog[$j]['name'] . "<br>";
-                    }
 
+
+        foreach($data as $item) {
+            $count_for = count($item['Категории']['Категория']);
+            for($i=0; $i<$count_for; $i++){
+                $post = new ShopForm();
+                $post -> name = $item['Категории']['Категория'][$i]['Наименование'];
+                $post -> second_id = $item['Категории']['Категория'][$i]['Ид'];
+                if(isset($item['Категории']['Категория'][$i]['Свойства'])){
+                    $post->id_catalog_second =  $item['Категории']['Категория'][$i]['Свойства']['Ид'];
+                }
+                $post -> save(false);
+            }
+            }
+
+        foreach($data as $item) {
+            $count_for = count($item['Товары']['Товар']);
+            for($i=0; $i<$count_for; $i++){
+                $post = new ProductForm();
+                $post -> id_second = $item['Товары']['Товар'][$i]['Ид'];
+                $post -> name = $item['Товары']['Товар'][$i]['Наименование'];
+
+                if($item['Товары']['Товар'][$i]['Артикул'] == Array()){
+                    $post -> vendor_code = '';
+                } else {
+                    $post -> vendor_code = $item['Товары']['Товар'][$i]['Артикул'];
+                }
+
+                if($item['Товары']['Товар'][$i]['Описание'] == Array()){
+                    $post -> description = 'Нет описания';
+                } else {
+                    $post -> description = $item['Товары']['Товар'][$i]['Описание'];
+                }
+
+                if(!isset($item['Товары']['Товар'][$i]['Картинка'])){
+                    $post -> img = '';
+                } else {
+                    $post -> img = $item['Товары']['Товар'][$i]['Картинка'];
+                }
+
+                $post -> id_catalog_second = $item['Товары']['Товар'][$i]['Категория'];
+                $post -> time = time();
+                $post -> save(false);
+            }
+                }
         }
 
-        echo "<pre>";
-        echo var_dump($change_catalog);
-        echo"</pre>";
 
-    }
+
+
 
 
 

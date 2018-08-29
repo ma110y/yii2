@@ -57,4 +57,6 @@ class ShopForm extends ActiveRecord {
         return $catalog_name;
     }
 
+
+
 }

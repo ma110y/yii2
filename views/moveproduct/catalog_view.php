@@ -14,12 +14,16 @@ if(Yii::$app->user->identity->role != 'admin'){
 
 <? $this -> title = 'Подтвердите перемещение'; ?>
 
-<? $id_product = Yii::$app->request->get('id_product'); ?>
-<? $id_catalog = Yii::$app->request->get('id_catalog'); ?>
 
 
-<br>
+<div class="alert alert-success">
+    Вы уверенны что хотите переместить товар <b><?=$product_name -> name?></b> в каталог <b><?=$catalog_name->name?></b>
+</div>
 
-<a href="<?=Url::to(['moveproduct/confirm', 'id_catalog'=>$id_catalog, 'id_product'=>$id_product])?>" class="btn btn-primary">
-    Переместить сюда
+<a href="<?=Url::to(['moveproduct/confirm', 'id_catalog'=>$catalog_name->id, 'id_product'=>$product_name->id])?>" class="btn btn-primary">
+    Да
+</a>
+
+<a href="<?=$_SERVER['HTTP_REFERER']?>" class="btn btn-primary">
+    Нет
 </a>

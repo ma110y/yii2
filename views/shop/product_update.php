@@ -13,9 +13,33 @@ if(Yii::$app->user->identity->role != 'admin'){
 } // выкидываем неадминов
 ?>
 
-
-
 <? $this -> title = 'Изменение товара'; ?>
+
+<div class="btn-group">
+    <div class="btn btn-primary">Путь:</div>
+
+
+    <a href="<?=Url::to(['shop/index'])?>" class="btn btn-danger">
+        /
+    </a>
+
+
+    <? if(isset($catalog_name_prev)){ ?>
+        <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])?>" class="btn btn-danger">
+            <?=$catalog_name_prev->name?>
+        </a>
+    <? } ?>
+
+    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger">
+        <?=$catalog_name->name?>
+    </a>
+
+    <a href="<?=Url::to(['shop/product_update', 'id' => $product->id])?>" class="btn btn-danger">
+        <?=$product->name?>
+    </a>
+</div>
+<br>
+<br>
 
 <? $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
