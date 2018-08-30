@@ -11,31 +11,36 @@ if(Yii::$app->user->identity->role != 'admin'){
 
 <? $prod =  (array) $product; ?>
 
-<? $this -> title = 'Просмотр товара'; ?>
-
-<div class="btn-group">
-    <div class="btn btn-primary">Путь:</div>
+<? $this -> title = $product[0]['name']; ?>
 
 
-    <a href="<?=Url::to(['shop/index'])?>" class="btn btn-danger">
-        /
-    </a>
+<?
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Админка',
+    'url'=>Url::toRoute('/admin/')
+);
+
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Список каталогов',
+    'url'=>Url::to(['shop/index'])
+);
+
+if(isset($catalog_name_prev)) {
+    $this->params['breadcrumbs'][] = array(
+        'label' => $catalog_name_prev->name,
+        'url' => Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])
+    );
+}
 
 
-    <? if(isset($catalog_name_prev)){ ?>
-    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])?>" class="btn btn-danger">
-        <?=$catalog_name_prev->name?>
-    </a>
-    <? } ?>
+$this->params['breadcrumbs'][] = array(
+    'label' => $catalog_name->name,
+    'url' => Url::to(['shop/view_catalog', 'id' => $catalog_name->id])
+);
 
-    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger">
-        <?=$catalog_name->name?>
-    </a>
 
-    <a href="<?=Url::to(['shop/product_view', 'id' => $prod[0]['id']])?>" class="btn btn-danger">
-        <?=$prod[0]['name']?>
-    </a>
-</div>
+$this->params['breadcrumbs'][] = $this->title;
+?>
 
 
 <div class="panel panel-default">
@@ -80,9 +85,11 @@ if(Yii::$app->user->identity->role != 'admin'){
             ]);
 
             ?>
+
             <a href="/web/product/<?=$prod[0]['img']?>" rel="fancybox">
                 <img src="/web/product/<?=$prod[0]['img']?>" height="200px">
             </a>
+
         </li>
 
         <div class="panel-body">
@@ -105,13 +112,10 @@ if(Yii::$app->user->identity->role != 'admin'){
     <br>
 
 
-    <? if(!isset($catalog_name_prev)){ ?>
-        <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger btn-block">
+
+
+        <a onclick="javascript:history.back(); return false;" class="btn btn-danger btn-block">
             Назад
         </a>
-    <? } else{ ?>
 
-<a href="<?=Url::to(['shop/product', 'id' => $prod[0]['id_catalog']])?>" class="btn btn-danger btn-block">
-    Назад
-</a>
-<? } ?>
+

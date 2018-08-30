@@ -10,31 +10,36 @@ if(Yii::$app->user->identity->role != 'admin'){
 ?>
 
 
-<? $this -> title = 'Товары'; ?>
+<? $this -> title = $catalog_name->name ?>
 
 
 <? $id = Yii::$app->request->get('id'); ?>
 
+<?
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Админка',
+    'url'=>Url::toRoute('/admin/')
+);
 
-<div class="btn-group">
-    <div class="btn btn-primary">Путь:</div>
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Список каталогов',
+    'url'=>Url::to(['shop/index'])
+);
+
+$this->params['breadcrumbs'][] = array(
+    'label'=> $catalog_name_prev->name,
+    'url'=>Url::to(['shop/view_catalog','id'=>$catalog_name_prev->id])
+);
 
 
-    <a href="<?=Url::to(['shop/index'])?>" class="btn btn-danger">
-        /
-    </a>
+$this->params['breadcrumbs'][] = $this->title;
+?>
 
-    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])?>" class="btn btn-danger">
-        <?=$catalog_name_prev->name?>
-    </a>
 
-    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger">
-        <?=$catalog_name->name?>
-    </a>
-</div>
 
 <a href="<?=Url::to(['shop/product_add', 'id_catalog' => $id])?>" class="btn btn-primary pull-right">Добавить товар </a>
 
+<br>
 <br>
 
 <?

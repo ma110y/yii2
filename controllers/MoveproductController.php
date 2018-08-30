@@ -83,6 +83,10 @@ class MoveproductController extends Controller {
 
         $product-> id_catalog = $id_catalog;
 
+        $product->id_catalog_second = '';
+        $product->id_second = '';
+
+
         $product -> save();
 
         Yii::$app->session->setFlash('success', 'Товар перемещен');

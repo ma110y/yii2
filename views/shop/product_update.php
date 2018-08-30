@@ -13,33 +13,39 @@ if(Yii::$app->user->identity->role != 'admin'){
 } // выкидываем неадминов
 ?>
 
-<? $this -> title = 'Изменение товара'; ?>
-
-<div class="btn-group">
-    <div class="btn btn-primary">Путь:</div>
+<? $this -> title = 'Изменение товара - '.$product->name.''; ?>
 
 
-    <a href="<?=Url::to(['shop/index'])?>" class="btn btn-danger">
-        /
-    </a>
+<?
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Админка',
+    'url'=>Url::toRoute('/admin/')
+);
+
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Список каталогов',
+    'url'=>Url::to(['shop/index'])
+);
+
+if(isset($catalog_name_prev)) {
+    $this->params['breadcrumbs'][] = array(
+        'label' => $catalog_name_prev->name,
+        'url' => Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])
+    );
+}
 
 
-    <? if(isset($catalog_name_prev)){ ?>
-        <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name_prev->id])?>" class="btn btn-danger">
-            <?=$catalog_name_prev->name?>
-        </a>
-    <? } ?>
+$this->params['breadcrumbs'][] = array(
+    'label' => $catalog_name->name,
+    'url' => Url::to(['shop/view_catalog', 'id' => $catalog_name->id])
+);
 
-    <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger">
-        <?=$catalog_name->name?>
-    </a>
 
-    <a href="<?=Url::to(['shop/product_update', 'id' => $product->id])?>" class="btn btn-danger">
-        <?=$product->name?>
-    </a>
-</div>
-<br>
-<br>
+$this->params['breadcrumbs'][] = $this->title;
+?>
+
+
+
 
 <? $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 

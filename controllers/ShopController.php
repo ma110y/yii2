@@ -25,7 +25,7 @@ class ShopController extends Controller {
         $catalog = ShopForm::getAll();
 
 
-        $query = ShopForm::find() -> where(['id_catalog' => 0]) ;
+        $query = ShopForm::find() -> andWhere(['id_catalog' => 0]) ->andWhere(['id_catalog_second'=>'0']) ;
 
         $countQuery = $query;
 
@@ -98,6 +98,9 @@ class ShopController extends Controller {
 
         $product = ProductForm::getall($id);
 
+//        $product = ProductForm::find() -> where(['id_catalog_second' => '429c26e0-b5b9-11e4-8355-74d02b7dfd8c' ]) -> all();
+
+
         $catalog_name = ShopForm::getCatalogName($id);
 
         $catalog_add = new ShopForm();
@@ -106,7 +109,7 @@ class ShopController extends Controller {
 
 
         //пагинация для каталогов
-        $query = ShopForm::find() -> where(['id_catalog' => $id]) ;
+        $query = ShopForm::find() -> andWhere(['id_catalog' => $id]) -> orWhere(['id_catalog_second' => $catalog_name->id_second]) ;
         $countQuery = $query;
         $pages_catalog = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
         $pages_catalog->pageSizeParam = false;
@@ -118,7 +121,7 @@ class ShopController extends Controller {
 
 
         //пагинация для товаров
-        $query2 = ProductForm::find() -> where(['id_catalog' => $id]) ;
+        $query2 = ProductForm::find() -> andWhere(['id_catalog' => $id])->orWhere(['id_catalog_second' => $catalog_name->id_second]) ;
         $countQuery2 = $query2;
         $pages_product = new Pagination(['totalCount' => $countQuery2->count(), 'pageSize' => 10]);
         $pages_product->pageSizeParam = false;
@@ -150,13 +153,24 @@ class ShopController extends Controller {
 
     public function actionProduct($id){
 
-        $product = ProductForm::getAll($id);
 
-        $catalog_name = ShopForm::getCatalogName($id);
+        $catalog_name = ShopForm::find() -> where(['id' => $id ])->one();
 
-        $catalog_name_prev = ShopForm::getCatalogName($catalog_name->id_catalog);
+        $catalog_name_prev = ShopForm::find() -> where(['id' => $catalog_name->id_catalog ])->one();
+        if(!isset($catalog_name_prev))$catalog_name_prev = ShopForm::find() -> where(['id_second' => $catalog_name->id_catalog_second ])->one();
 
-        $query = ProductForm::find() -> where(['id_catalog' => $id]) ;
+        $product = ProductForm::find()
+            -> where(['id_catalog' => $id ])
+            -> orWhere(['id_catalog_second' => $catalog_name->id_second])
+            -> all();
+
+
+//        echo var_dump($catalog_name_prev); die();
+
+
+        $query = ProductForm::find()
+            -> where(['id_catalog' => $id ])
+            -> orWhere(['id_catalog_second' => $catalog_name->id_second]);
 
         $countQuery = $query;
 
@@ -164,7 +178,7 @@ class ShopController extends Controller {
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
 
         $pages->pageSizeParam = false;
-        $catalog = $query->offset($pages->offset)
+        $product = $query->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
@@ -178,7 +192,11 @@ class ShopController extends Controller {
 
         $id_catalog = Yii::$app->request->get('id_catalog');
 
-        if($product -> load(Yii::$app->request->post()) && $product->validate()){
+        $product -> load(Yii::$app->request->post());
+
+        if(!isset($product->time)) $product->time = time();
+
+        if($product->validate()){
 
 
             $product -> img = UploadedFile::getInstance($product, 'img');
@@ -186,13 +204,13 @@ class ShopController extends Controller {
 
             $product->id_catalog = $id_catalog;
 
-            $product->time = time();
+
 
             $product -> save();
 
             Yii::$app->session->setFlash('success', 'Товар добавлен');
 
-            return Yii::$app->response->redirect(['shop/product', 'id' => $id_catalog]);
+            return Yii::$app->response->redirect(['shop/product_view', 'id' => $product->id]);
 
         }
 
@@ -206,9 +224,21 @@ class ShopController extends Controller {
 
         $product = ProductForm::getOne($id);
 
-        $catalog_name = ShopForm::getCatalogName($product[0]->id_catalog);
+//        echo var_dump($product[0][id_catalog]); die();
 
-        $catalog_name_prev = ShopForm::getCatalogName($catalog_name->id_catalog);
+
+        $catalog_name = ShopForm::find() -> where(['id' => $product[0]['id_catalog'] ])->one();
+        if(!isset($catalog_name)){
+            $catalog_name = ShopForm::find() -> where(['id_second' => $product[0]['id_catalog_second'] ])->one();
+        }
+
+//        echo var_dump($catalog_name); die();
+
+
+        $catalog_name_prev = ShopForm::find() -> where(['id' => $catalog_name->id_catalog ])->one();
+        if(!isset($catalog_name_prev)){
+            $catalog_name_prev = ShopForm::find() -> where(['id_second' => $catalog_name->id_catalog_second ])->one();
+        }
 
 
 
@@ -221,11 +251,18 @@ class ShopController extends Controller {
 
         $product = ProductForm::getOneProduct($id);
 
+        $catalog_name = ShopForm::find() -> where(['id' => $product->id_catalog ])->one();
+        if(!isset($catalog_name)){
+            $catalog_name = ShopForm::find() -> where(['id_second' => $product->id_catalog_second])->one();
+        }
+
+//        echo var_dump($catalog_name); die();
 
 
-        $catalog_name = ShopForm::getCatalogName($product->id_catalog);
-
-        $catalog_name_prev = ShopForm::getCatalogName($catalog_name->id_catalog);
+        $catalog_name_prev = ShopForm::find() -> where(['id' => $catalog_name->id_catalog ])->one();
+        if(!isset($catalog_name_prev)){
+            $catalog_name_prev = ShopForm::find() -> where(['id_second' => $catalog_name->id_catalog_second ])->one();
+        }
 
         $img_name = $product->img;
 
@@ -233,22 +270,25 @@ class ShopController extends Controller {
 
         if($product -> load(Yii::$app->request->post()) && $product->validate()){
 
+
             $timestamp = strtotime(''.$product->time.'');
             $product-> time = $timestamp;
 
-            if($product->img) {
+//            echo var_dump($product); die();
+
             $product -> img = UploadedFile::getInstance($product, 'img');
+
+            if($product->img) {
             $product->img->saveAs('product/'.$product->img->baseName.'.'.$product->img->extension.'');
             } else {
                 $product->img = $img_name;
             }
 
-
             $product -> save();
 
             Yii::$app->session->setFlash('success', 'Товар изменет');
 
-            return Yii::$app->response->redirect(['shop/product', 'id' => $product->id_catalog]);
+            return Yii::$app->response->redirect(['shop/product_view', 'id' => $product->id]);
 
         }
 
@@ -291,9 +331,11 @@ class ShopController extends Controller {
             for($i=0; $i<$count_for; $i++){
                 $post = new ShopForm();
                 $post -> name = $item['Категории']['Категория'][$i]['Наименование'];
-                $post -> second_id = $item['Категории']['Категория'][$i]['Ид'];
+                $post -> id_second = $item['Категории']['Категория'][$i]['Ид'];
                 if(isset($item['Категории']['Категория'][$i]['Свойства'])){
                     $post->id_catalog_second =  $item['Категории']['Категория'][$i]['Свойства']['Ид'];
+                } else {
+                    $post->id_catalog_second = '0';
                 }
                 $post -> save(false);
             }
@@ -319,7 +361,7 @@ class ShopController extends Controller {
                 }
 
                 if(!isset($item['Товары']['Товар'][$i]['Картинка'])){
-                    $post -> img = '';
+                    $post -> img = 'no_img';
                 } else {
                     $post -> img = $item['Товары']['Товар'][$i]['Картинка'];
                 }
@@ -329,6 +371,10 @@ class ShopController extends Controller {
                 $post -> save(false);
             }
                 }
+
+            Yii::$app -> session -> setFlash('success', 'Данные из xml загруженны');
+
+            return Yii::$app->response->redirect(['admin/index']);
         }
 
 

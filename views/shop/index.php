@@ -12,6 +12,15 @@ Yii::$app->response->redirect(Url::to('?'));
 
 <? $this -> title = 'Список каталогов'; ?>
 
+<?
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Админка',
+    'url'=>Url::toRoute('/admin/')
+);
+
+$this->params['breadcrumbs'][] = $this->title;
+?>
+
 <h1>Список каталогов</h1>
 
 <table class="table">

@@ -2,6 +2,7 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use yii\widgets\Breadcrumbs;
 ?>
 
 <?
@@ -20,30 +21,44 @@ if(Yii::$app->user->identity->role != 'admin'){
 //die();
 //?>
 
-<? $this -> title = 'Просмотр каталога'; ?>
+
+<? $this -> title = $catalog_name->name; ?>
+
+<?
+$start_url =  \Yii::getAlias('@webroot');
+
+
+
+if (file_exists($filename)) {
+    echo "Файл $filename существует";
+} else {
+    echo "Файл $filename не существует";
+}?>
+
+<?
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Админка',
+    'url'=>Url::toRoute('/admin/')
+);
+
+$this->params['breadcrumbs'][] = array(
+    'label'=> 'Список каталогов',
+    'url'=>Url::to(['shop/index'])
+);
+$this->params['breadcrumbs'][] = $this->title;
+?>
+
 
 <div class="row">
     <div class="col-xs-12">
 
-        <div class="btn-group">
-            <div class="btn btn-primary">Путь:</div>
 
-
-            <a href="<?=Url::to(['shop/index'])?>" class="btn btn-danger">
-                /
-            </a>
-
-            <a href="<?=Url::to(['shop/view_catalog', 'id' => $catalog_name->id])?>" class="btn btn-danger">
-                <?=$catalog_name->name?>
-            </a>
-
-        </div>
 
         <? $id = Yii::$app->request->get('id'); ?>
 
         <a href="<?=Url::to(['shop/product_add', 'id_catalog' => $id])?>" class="btn btn-primary pull-right">Добавить товар </a>
 
-            </div>
+    </div>
 
 
 
@@ -160,9 +175,15 @@ if(Yii::$app->user->identity->role != 'admin'){
                         ]);
 
                         ?>
-                        <a href="/web/product/<?=$prod->img?>" rel="fancybox">
-                            <img src="/web/product/<?=$prod->img?>" height="70px">
-                        </a>
+                        <? $file = $start_url.'/product/'.$prod->img; ?>
+                        <? if(file_exists($file)){?>
+                            <a href="/web/product/<?=$prod->img?>" rel="fancybox">
+                                <img src="/web/product/<?=$prod->img?>" height="70px">
+                            </a>
+                        <? }else{ ?>
+                            <a href="/web/product/no_photo.png" rel="fancybox">
+                            <img src="/web/product/no_photo.png" height="70px">
+                        <? } ?>
                     </td>
 
                     <td>
