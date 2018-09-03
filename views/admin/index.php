@@ -21,3 +21,5 @@ if(Yii::$app->user->identity->role != 'admin'){
 <a href="<?=Url::to(['shop/index']);?>">Работа с товарами </a>
 <br>
 <a href="<?=Url::to(['shop/loadxml']);?>">Загрузить из XML </a>
+<br>
+<a href="<?=Url::to(['shop/updatexml']);?>">Обновить из XML </a>

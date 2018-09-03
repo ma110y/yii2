@@ -26,14 +26,9 @@ if(Yii::$app->user->identity->role != 'admin'){
 
 <?
 $start_url =  \Yii::getAlias('@webroot');
+?>
 
 
-
-if (file_exists($filename)) {
-    echo "Файл $filename существует";
-} else {
-    echo "Файл $filename не существует";
-}?>
 
 <?
 $this->params['breadcrumbs'][] = array(

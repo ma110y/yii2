@@ -200,7 +200,15 @@ class ShopController extends Controller {
 
 
             $product -> img = UploadedFile::getInstance($product, 'img');
-            $product->img->saveAs('product/'.$product->img->baseName.'.'.$product->img->extension.'');
+
+            if(isset($product->img)) {
+
+                $product->img->saveAs('product/' . $product->img->baseName . '.' . $product->img->extension . '');
+
+            } else {
+                Yii::$app->session->setFlash('error', 'Необходимо добавить картинку');
+                return $this -> refresh();
+            }
 
             $product->id_catalog = $id_catalog;
 
@@ -304,8 +312,11 @@ class ShopController extends Controller {
 
         $del = ProductForm::find()->where(['id' => $id])->one();
 
-        unlink('product/'.$del->img.'');
-
+        $start_url =  \Yii::getAlias('@webroot');
+        $file = $start_url.'/product/'.$del->img;
+        if(file_exists($file)) {
+            unlink('product/' . $del->img . '');
+        }
         $id_catalog = $del -> id_catalog;
 
         $del -> delete();
@@ -313,7 +324,7 @@ class ShopController extends Controller {
 
         Yii::$app -> session -> setFlash('success', 'Тавар удален');
 
-        return Yii::$app->response->redirect(['shop/product', 'id' => $id_catalog]);
+        return Yii::$app->response->redirect(''.$_SERVER['HTTP_REFERER'].'');
     }
 
 
@@ -378,6 +389,98 @@ class ShopController extends Controller {
         }
 
 
+    public function actionUpdatexml()
+    {
+        $file = $_SERVER['DOCUMENT_ROOT'].'/web/xml/import.xml';
+        $xml = simplexml_load_file($file);
+        $json = json_encode($xml);
+        $data = json_decode($json,TRUE);
+
+
+
+        foreach($data as $item) {
+            $count_for = count($item['Категории']['Категория']);
+            for($i=0; $i<$count_for; $i++){
+                $post = new ShopForm();
+                $post -> name = $item['Категории']['Категория'][$i]['Наименование'];
+
+                $query = ShopForm::find() -> where(['name' => $post->name])->one();
+                if(count($query)==0) {
+                    $post->id_second = $item['Категории']['Категория'][$i]['Ид'];
+                    if (isset($item['Категории']['Категория'][$i]['Свойства'])) {
+                        $post->id_catalog_second = $item['Категории']['Категория'][$i]['Свойства']['Ид'];
+                    } else {
+                        $post->id_catalog_second = '0';
+                    }
+                    $post->save(false);
+                }
+            }
+        }
+
+        foreach($data as $item) {
+            $count_for = count($item['Товары']['Товар']);
+            for($i=0; $i<$count_for; $i++){
+
+                $product = ProductForm::find()-> where(['name' => $item['Товары']['Товар'][$i]['Наименование']]) -> one();
+
+                if(count($product) == 0) {
+
+                    $post = new ProductForm();
+                    $post->id_second = $item['Товары']['Товар'][$i]['Ид'];
+                    $post->name = $item['Товары']['Товар'][$i]['Наименование'];
+
+                    if ($item['Товары']['Товар'][$i]['Артикул'] == Array()) {
+                        $post->vendor_code = '';
+                    } else {
+                        $post->vendor_code = $item['Товары']['Товар'][$i]['Артикул'];
+                    }
+
+                    if ($item['Товары']['Товар'][$i]['Описание'] == Array()) {
+                        $post->description = 'Нет описания';
+                    } else {
+                        $post->description = $item['Товары']['Товар'][$i]['Описание'];
+                    }
+
+                    if (!isset($item['Товары']['Товар'][$i]['Картинка'])) {
+                        $post->img = 'no_img';
+                    } else {
+                        $post->img = $item['Товары']['Товар'][$i]['Картинка'];
+                    }
+
+                    $post->id_catalog_second = $item['Товары']['Товар'][$i]['Категория'];
+                    $post->time = time();
+                    $post->save(false);
+                } else {
+
+                    if ($item['Товары']['Товар'][$i]['Артикул'] == Array()) {
+                        $product->vendor_code = '';
+                    } else {
+                        $product->vendor_code = $item['Товары']['Товар'][$i]['Артикул'];
+                    }
+
+                    if ($item['Товары']['Товар'][$i]['Описание'] == Array()) {
+                        $product->description = 'Нет описания';
+                    } else {
+                        $product->description = $item['Товары']['Товар'][$i]['Описание'];
+                    }
+
+                    if (!isset($item['Товары']['Товар'][$i]['Картинка'])) {
+                        $product->img = 'no_img';
+                    } else {
+                        $product->img = $item['Товары']['Товар'][$i]['Картинка'];
+                    }
+
+                    $product->id_catalog_second = $item['Товары']['Товар'][$i]['Категория'];
+                    $product->time = time();
+                    $product->save(false);
+                }
+            }
+        }
+
+        Yii::$app -> session -> setFlash('success', 'Данные из xml обновлены');
+
+        return Yii::$app->response->redirect(['admin/index']);
+    }
 
 
 
