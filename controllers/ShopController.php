@@ -470,6 +470,10 @@ class ShopController extends Controller {
                         $product->img = $item['Товары']['Товар'][$i]['Картинка'];
                     }
 
+                    if($item['Товары']['Товар'][$i]["@attributes"]["Статус"] == "Удален"){
+                        $product->active = '0';
+                    }
+
                     $product->id_catalog_second = $item['Товары']['Товар'][$i]['Категория'];
                     $product->time = time();
                     $product->save(false);
@@ -477,13 +481,43 @@ class ShopController extends Controller {
             }
         }
 
-        Yii::$app -> session -> setFlash('success', 'Данные из xml обновлены');
+        Yii::$app -> session -> setFlash('success', 'Данные из import.xml обновлены');
 
         return Yii::$app->response->redirect(['admin/index']);
     }
 
 
 
+    public function actionUpdateoffersxml() {
+        $file = $_SERVER['DOCUMENT_ROOT'] . '/web/xml/offers.xml';
+        $xml = simplexml_load_file($file);
+        $json = json_encode($xml);
+        $data = json_decode($json, TRUE);
+
+
+
+
+        foreach ($data as $item) {
+            $count_for = count($item["Предложения"]["Предложение"]);
+            for ($i = 0; $i < $count_for; $i++) {
+
+                $product = ProductForm::find()-> where(['id_second' => $item["Предложения"]["Предложение"][$i]["Ид"]]) -> one();
+
+                if(count($product)!=0){
+                    $product -> price = $item["Предложения"]["Предложение"][$i]["Цены"]["Цена"]["ЦенаЗаЕдиницу"];
+                    $product->save(false);
+                }
+
+                   }
+
+        }
+
+        Yii::$app -> session -> setFlash('success', 'Данные из offers.xml обновлены');
+
+        return Yii::$app->response->redirect(['admin/index']);
+
+
+    }
 
 
 }
