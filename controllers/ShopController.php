@@ -496,7 +496,6 @@ class ShopController extends Controller {
 
 
 
-
         foreach ($data as $item) {
             $count_for = count($item["Предложения"]["Предложение"]);
             for ($i = 0; $i < $count_for; $i++) {
@@ -504,7 +503,11 @@ class ShopController extends Controller {
                 $product = ProductForm::find()-> where(['id_second' => $item["Предложения"]["Предложение"][$i]["Ид"]]) -> one();
 
                 if(count($product)!=0){
-                    $product -> price = $item["Предложения"]["Предложение"][$i]["Цены"]["Цена"]["ЦенаЗаЕдиницу"];
+                    if($item["Предложения"]["Предложение"][$i]["Цены"]["Цена"][0]["ЦенаЗаЕдиницу"]){
+                        $product -> price = $item["Предложения"]["Предложение"][$i]["Цены"]["Цена"][0]["ЦенаЗаЕдиницу"];
+                    } else {
+                        $product->price = $item["Предложения"]["Предложение"][$i]["Цены"]["Цена"]["ЦенаЗаЕдиницу"];
+                    }
                     $product->save(false);
                 }
 
